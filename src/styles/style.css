@@ -1,0 +1,259 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+p {
+	font-size: 12px;
+}
+
+body {
+	background-color: #f7f7f7;
+	height: 100vh;
+}
+
+h1 {
+	color:black;
+	font-size: 24px;
+}
+
+ul {
+	list-style-type: none;
+}
+
+.header__btns {
+	background: none;
+	border-color: transparent;
+	box-shadow: none;
+}
+
+.movie-poster {
+	width: 180px;
+ 	height: 260px;
+}
+
+.movie-null {
+	background-color: white;
+}
+
+.card {
+	border: 0;
+	border-radius: 0;
+	box-shadow: 0 4px 12px 0 #00000026;
+	margin-top: 20px;
+	width: 454px;
+	height: 281px;
+}
+
+.card__image {
+	width: '173px',
+}
+
+.card__box {
+	height: 260px;
+	width: 260px;
+	margin-top: 10px;
+	padding: 0 !important;
+}
+
+.card__rate {
+	align-items: center;
+	border: 2px solid #e9d100;
+	border-radius: 50%;
+	display: flex;
+	height: 30px;
+	justify-content: center;
+	width: 30px;
+}
+
+.card__rate.red {
+	border-color: #E90000;
+}
+
+.card__rate.orange {
+	border-color: #E97E00;
+}
+
+.card__rate.green {
+	border-color: #66e900;
+}
+
+.card__rate.yellow {
+	border-color: #E9D100;
+}
+
+.card__genre {
+	border-radius: 2px;
+	border: 1px solid #D9D9D9;
+	background: #FAFAFA;
+	padding: 1px 2px;
+}
+
+.card__color-text {
+	color: rgba(0, 0, 0, 0.45);
+}
+
+.card__release-date {
+	display: flex;
+	align-items: flex-start;
+	padding-top: 10px;
+}
+
+.card__movie-gerne {
+	text-align: left;
+}
+
+.card__start {
+	font-size: 15px;
+}
+
+.flex {
+	display: flex;
+	justify-content: space-between;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.box_header {
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 28px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.stable-font {
+	font-size: 12px;
+}
+
+.overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.app-container {
+	background-color: #fff;
+	height: 100%;
+	margin: 0 auto;
+	max-width: 1010px;
+	min-height: calc(100vh - 60px);
+	padding: 20px 35px;
+	text-align: center;
+}
+
+.card_wrap {
+	display: flex;
+	flex-direction: row;
+}
+
+.image_blank {
+	background-color: #f7f7f7;
+	width: 180px;
+	height: 280px;
+}
+
+img {
+	width: 183px;
+	height: 281px;
+}
+
+.btn {
+	background-color: none !important;
+	border-color: none !important;
+}
+
+:where(.css-dev-only-do-not-override-i1mju1).ant-card .ant-card-body {
+	padding: 0;
+}
+
+:where(.css-dev-only-do-not-override-i1mju1).ant-col-12 {
+	flex: none;
+}
+
+:where(.css-dev-only-do-not-override-i1mju1).ant-flex {
+	align-items: center;
+	justify-content: space-between;
+}
+
+:where(.css-dev-only-do-not-override-i1mju1).ant-rate {
+	font-size: 14px;
+}
+
+:where(.css-dev-only-do-not-override-i1mju1).ant-rate {
+	font-size: 16px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+:where(.css-dev-only-do-not-override-i1mju1).ant-empty {
+	margin-inline: inherit;
+}
+
+:where(.css-dev-only-do-not-override-i1mju1).ant-empty .ant-empty-image {
+	height: 281px;
+}
+:where(.css-i1mju1).ant-card .ant-card-body {
+	padding: 0;
+	border-radius: 0 0 8px 8px;
+}
+
+:where(.css-i1mju1).ant-col-12 {
+	flex: inherit;
+}
+
+:where(.css-i1mju1).ant-flex {
+	justify-content: space-between;
+}
+
+:where(.css-i1mju1).ant-rate {
+	font-size: 16px;
+	position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+:where(.css-i1mju1).ant-empty {
+	margin-inline: inherit;
+	height: 100%;
+	display: flex;
+  align-items: center;
+}
+
+:where(.css-i1mju1).ant-row {
+	height: 100%;
+}
+
+:where(.css-i1mju1).ant-card .ant-card-body {
+	padding: 0;
+	height: 100%;
+}
+
+.ant-pagination-options {
+	display: none;
+}
+:where(.css-dev-only-do-not-override-i1mju1).ant-select-single .ant-select-selector {
+	display: none;
+}
+
+:where(.css-dev-only-do-not-override-i1mju1).ant-pagination::after {
+	margin-top: 10px;
+	display: none;
+}
+
+:where(.css-dev-only-do-not-override-i1mju1).ant-select .ant-select-arrow {
+	display: none;
+}
+
+.ant-pagination .css-dev-only-do-not-override-i1mju1 {
+	margin-top: 10px;
+}
+
+:where(.css-i1mju1).ant-pagination .ant-pagination-options {
+	display: none;
+}
