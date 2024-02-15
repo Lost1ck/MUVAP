@@ -27,7 +27,6 @@ class App extends Component {
       checkedRating: true,
       guestSessionId: null,
     };
-    this.handlePageChange = this.handlePageChange.bind(this);
     this.debouncedFetchData = debounce(this.fetchData, 500);
   }
 
@@ -136,12 +135,10 @@ class App extends Component {
     const {
       inputValue, movies, error, isLoading, outOfSearch, currentTab,
       isOnline, totalPages, currentPage, checkedRating, ratedMovies,
-      onPageChange,
     } = this.state;
 
     const searchData = {
       currentTab,
-      onPageChange,
       getRatingForMovie: this.getRatingForMovie,
       handleRatingChange: this.handleRatingChange,
       ratedMovies,

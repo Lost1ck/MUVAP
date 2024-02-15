@@ -257,3 +257,65 @@ img {
 :where(.css-i1mju1).ant-pagination .ant-pagination-options {
 	display: none;
 }
+
+:where(.css-dev-only-do-not-override-i1mju1).ant-pagination {
+	margin-top: 20px;
+}
+
+@media (max-width: 420px) {
+
+	img {
+		width: 60px;
+		Height: 91px;
+	}
+
+	.card {
+		padding: 5px 10px 0px 10px;
+		height: 245px;
+	}
+
+	.card__box {
+    margin-top: 0;
+	}
+
+	:where(.css-dev-only-do-not-override-i1mju1).ant-col-12 {
+    max-width: 100%;
+	}
+
+	:where(.css-dev-only-do-not-override-i1mju1).ant-flex {
+    align-items: baseline;
+	}
+
+	.card__release-date {
+    padding-top: 0px;
+	}
+
+	:where(.css-dev-only-do-not-override-i1mju1).ant-rate {
+    bottom: 12%;
+		right: 0;
+		left: inherit;
+	}
+
+	.card__text {
+		position: absolute;
+    left: -70px;
+	}
+
+	:where(.css-dev-only-do-not-override-i1mju1).ant-empty .ant-empty-image {
+		width: 60px;
+    height: 90px !important;
+	}
+
+	.card__release-date {
+    min-height: 15px;
+	}
+
+	.card__movie-gerne {
+    min-height: 40px;
+	}
+
+	:where(.css-dev-only-do-not-override-i1mju1).ant-card .ant-card-body {
+    font-size: 12px;
+	}
+	
+}

@@ -3,10 +3,7 @@ import React from 'react';
 import { Pagination } from 'antd';
 
 const Footer = ({ searchData }) => {
-  const { currentPage, totalPages, onPageChange } = searchData;
-  const handlePageChange = (page) => {
-    onPageChange(page);
-  };
+  const { currentPage, totalPages, handlePageChange } = searchData;
 
   return (
     <Pagination
