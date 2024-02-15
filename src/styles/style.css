@@ -262,6 +262,81 @@ img {
 	margin-top: 20px;
 }
 
+.header__btns:active {
+	border: none !important;
+	border-bottom: none !important;
+	border-radius: 0;
+}
+
+:where(.css-dev-only-do-not-override-i1mju1).ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+	color: initial !important;
+	border-color: transparent !important;
+	transition: outline-offset 5s,outline 5s;
+}
+
+nav {
+  position: relative;
+}
+
+.header__btns {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: #000;
+  transition: color 0.3s ease;
+}
+
+.header__btns:hover {
+  color: #555;
+}
+
+.active {
+	color: #1890FF !important;
+  font-weight: bold;
+}
+
+.active-tab-indicator {
+  height: 2px;
+  background-color: blue;
+  position: absolute;
+  bottom: 0;
+  transition: width 0.3s ease, transform 0.3s ease;
+  width: 0;
+}
+
+.active-tab-indicator.search {
+  width: 70px;
+  transform: translateX(0);
+}
+
+.active-tab-indicator.rated {
+  width: 70px;
+  transform: translateX(100%);
+}
+
+.active-tab-indicator {
+  height: 2px;
+  background-color: #1890FF;
+  position: absolute;
+  bottom: -25px;
+  left: 54%; 
+  transition: transform 0.3s ease;
+  width: 65px;
+  transform: translateX(-50%);
+}
+
+.header__btns:nth-child(1).active ~ .active-tab-indicator {
+  transform: translateX(calc(-55% - 65px));
+}
+
+/* Стили для индикатора под вкладкой "Rated" */
+.header__btns:nth-child(2).active ~ .active-tab-indicator {
+  transform: translateX(calc(-55% + 5px));
+}
+
+
 @media (max-width: 420px) {
 
 	img {
