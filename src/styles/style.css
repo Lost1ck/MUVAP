@@ -141,7 +141,7 @@ ul {
 	height: 100%;
 	margin: 0 auto;
 	max-width: 1010px;
-	min-height: calc(100vh - 60px);
+	min-height: calc(100vh);
 	padding: 20px 35px;
 	text-align: center;
 }
@@ -328,14 +328,13 @@ nav {
 }
 
 .header__btns:nth-child(1).active ~ .active-tab-indicator {
-  transform: translateX(calc(-55% - 65px));
+	transform: translateX(calc(40px));
 }
 
 /* Стили для индикатора под вкладкой "Rated" */
 .header__btns:nth-child(2).active ~ .active-tab-indicator {
-  transform: translateX(calc(-55% + 5px));
+	transform: translateX(calc(40px));
 }
-
 
 @media (max-width: 420px) {
 

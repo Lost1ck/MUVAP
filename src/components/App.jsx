@@ -1,8 +1,4 @@
-/* eslint-disable react/no-unused-class-component-methods */
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable react/no-unused-state */
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import debounce from 'lodash/debounce';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -31,19 +27,18 @@ class App extends Component {
   }
 
   async componentDidMount() {
+    window.addEventListener('online', this.handleNetworkChange);
+    window.addEventListener('offline', this.handleNetworkChange);
+
     const savedRatedMovies = localStorage.getItem('ratedMovies');
     const ratedMovies = savedRatedMovies ? JSON.parse(savedRatedMovies) : [];
     this.setState({ ratedMovies });
+
     this.fetchData();
     try {
       const sessionData = await guestSession();
       if (sessionData && sessionData.guest_session_id) {
-        this.setState({ guestSessionId: sessionData.guest_session_id }, async () => {
-          const ratedMoviesData = await fetchRatedMoviesByGuestSession(this.state.guestSessionId);
-          if (ratedMoviesData && ratedMoviesData.results) {
-            this.setState({ ratedMovies: ratedMoviesData.results });
-          }
-        });
+        this.setState({ guestSessionId: sessionData.guest_session_id }, this.updateRatedMovies);
       }
     } catch (error) {
       console.error('Ошибка:', error);
@@ -54,6 +49,18 @@ class App extends Component {
     window.removeEventListener('online', this.handleNetworkChange);
     window.removeEventListener('offline', this.handleNetworkChange);
   }
+
+  updateRatedMovies = async () => {
+    const { guestSessionId } = this.state;
+    if (!guestSessionId) return;
+
+    const ratedMoviesData = await fetchRatedMoviesByGuestSession(guestSessionId);
+    if (ratedMoviesData && ratedMoviesData.results) {
+      this.setState({ ratedMovies: ratedMoviesData.results }, () => {
+        localStorage.setItem('ratedMovies', JSON.stringify(this.state.ratedMovies));
+      });
+    }
+  };
 
   fetchData = (page = 1) => {
     if (page === undefined || page === null) {
@@ -122,14 +129,14 @@ class App extends Component {
     return ratedMovie ? ratedMovie.rating : 0;
   };
 
-  async createGuestSession() {
-    const guestSessionResponse = await guestSession();
-    if (guestSessionResponse.success) {
-      this.setState({ guestSessionId: guestSessionResponse });
-    } else {
-      console.error('Ошибка получения guest_session_id');
-    }
-  }
+  // async createGuestSession() {
+  //   const guestSessionResponse = await guestSession();
+  //   if (guestSessionResponse.success) {
+  //     this.setState({ guestSessionId: guestSessionResponse });
+  //   } else {
+  //     console.error('Ошибка получения guest_session_id');
+  //   }
+  // }
 
   render() {
     const {

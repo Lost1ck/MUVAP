@@ -1,13 +1,13 @@
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prop-types */
+/* eslint-disable react/forbid-prop-types */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'; // Импорт модуля PropTypes
 import {
   Flex, Rate, Typography, Row, Col, Card,
 } from 'antd';
 import Image from './img/Img.jsx';
 import Overview from '../overview/Overview.jsx';
 import MovieGenres from '../fileGenre/FileGenre.jsx';
-// import { NotFound } from './Alert.jsx';
 
 class Cards extends Component {
   render() {
@@ -38,7 +38,7 @@ class Cards extends Component {
       : ratedMovies;
 
     if (!checkedRating && ratedMovies.length === 0) {
-      return <h2>No movies</h2>; // Выведите сообщение, если нет оцененных фильмов
+      return <h2>No movies</h2>;
     }
 
     return (
@@ -98,5 +98,13 @@ class Cards extends Component {
     );
   }
 }
+
+Cards.propTypes = {
+  movies: PropTypes.array.isRequired,
+  getRatingForMovie: PropTypes.func.isRequired,
+  ratedMovies: PropTypes.array.isRequired,
+  checkedRating: PropTypes.bool.isRequired,
+  handleRatingChange: PropTypes.func.isRequired,
+};
 
 export default Cards;

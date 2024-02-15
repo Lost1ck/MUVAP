@@ -1,7 +1,5 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-// Navigation.jsx
+/* eslint-disable react/forbid-prop-types */
+import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { Divider, Input } from 'antd';
 import {
@@ -13,7 +11,7 @@ import { NotFound } from '../Alert.jsx';
 
 export const SearchPage = ({ searchData }) => {
   const {
-    inputValue, handleInputChange, ratedMovies, outOfSearch, movies,
+    inputValue, handleInputChange, outOfSearch, movies,
   } = searchData;
 
   return (
@@ -34,12 +32,32 @@ export const SearchPage = ({ searchData }) => {
   );
 };
 
+SearchPage.propTypes = {
+  searchData: PropTypes.shape({
+    inputValue: PropTypes.string.isRequired,
+    handleInputChange: PropTypes.func.isRequired,
+    ratedMovies: PropTypes.array.isRequired,
+    outOfSearch: PropTypes.bool.isRequired,
+    movies: PropTypes.array.isRequired,
+  }).isRequired,
+};
+
 export const RatedPage = ({ searchData }) => (
   <>
     <Divider />
     <DisplayComponent searchData={searchData} />
   </>
 );
+
+RatedPage.propTypes = {
+  searchData: PropTypes.shape({
+    inputValue: PropTypes.string.isRequired,
+    handleInputChange: PropTypes.func.isRequired,
+    ratedMovies: PropTypes.array.isRequired,
+    outOfSearch: PropTypes.bool.isRequired,
+    movies: PropTypes.array.isRequired,
+  }).isRequired,
+};
 
 const Navigation = ({ searchData }) => {
   const { setCheckedRating } = searchData;
@@ -74,6 +92,7 @@ const Navigation = ({ searchData }) => {
   const handleCheckedRatingF = () => {
     setCheckedRating(false);
   };
+
   return (
     <>
       <nav>
@@ -81,7 +100,7 @@ const Navigation = ({ searchData }) => {
           to="/search"
           className="header__btns"
           onClick={handleCheckedRatingT}
-          innerRef={searchRef}
+          ref={searchRef}
         >
           Search
         </NavLink>
@@ -89,7 +108,7 @@ const Navigation = ({ searchData }) => {
           to="/rated"
           className="header__btns"
           onClick={handleCheckedRatingF}
-          innerRef={ratedRef}
+          ref={ratedRef}
         >
           Rated
         </NavLink>
@@ -102,6 +121,12 @@ const Navigation = ({ searchData }) => {
       </Routes>
     </>
   );
+};
+
+Navigation.propTypes = {
+  searchData: PropTypes.shape({
+    setCheckedRating: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default Navigation;

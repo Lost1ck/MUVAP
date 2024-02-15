@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-catch */
 async function fetchMovies({ inputValue, page }) {
   const API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYTZiZDc5YmIwZThiODhkOWI1NzYzNzUwZDljN2U1MiIsInN1YiI6IjY1YTNmM2M1MjY2Nzc4MDEyZTY0NmY0NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zeZ79D086cj3s_oe2yJnnHDHYI96_pjYFdvOC7IHGKY';
   const options = {
@@ -20,7 +19,7 @@ async function fetchMovies({ inputValue, page }) {
       totalPages: data.total_pages,
     };
   } catch (error) {
-    throw console.error(error);
+    throw new Error(error.message);
   }
 }
 
@@ -38,14 +37,13 @@ export async function guestSession() {
   try {
     const response = await fetch('https://api.themoviedb.org/3/authentication/guest_session/new', options);
     if (!response.ok) {
-      // Обработка некорректного ответа от сервера
       throw new Error(`Ошибка получения guest_session_id: ${response.statusText}`);
     }
     const data = await response.json();
-    return data; // Возвращаем только ID сессии
+    return data;
   } catch (error) {
     console.error('Ошибка при получении guest_session_id:', error);
-    throw error; // Переброс ошибки для дальнейшей обработки
+    throw new Error(error.message);
   }
 }
 
@@ -67,11 +65,9 @@ export async function fetchRatedMoviesByGuestSession(guestSessionId) {
     if (data.results.length === 0 || data === undefined) {
       return null;
     }
-    console.log(data.results);
-    return data.results; // Возвращаем список фильмов
+    return data.results;
   } catch (error) {
-    console.error(error);
-    throw error;
+    throw new Error(error.message);
   }
 }
 // Отправка на сервер
@@ -90,7 +86,6 @@ export async function rateMovieInGuestSession(movieId, rating, guestSessionId) {
       throw new Error(`Ошибка отправки рейтинга: ${errorData.status_message}`);
     }
   } catch (error) {
-    console.error(error);
-    throw error;
+    throw new Error();
   }
 }

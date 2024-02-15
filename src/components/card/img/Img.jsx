@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Empty } from 'antd';
 
 const Image = ({ movies, id }) => {
@@ -22,6 +22,17 @@ const Image = ({ movies, id }) => {
   ) : (
     <Empty description={false} style={{ backgroundColor: 'gray' }} />
   );
+};
+
+Image.propTypes = {
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      poster_path: PropTypes.string,
+      original_title: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  id: PropTypes.number.isRequired,
 };
 
 export default Image;

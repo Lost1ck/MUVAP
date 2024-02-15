@@ -1,8 +1,5 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-shadow */
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Card, Space } from 'antd';
 
 const genresData = {
@@ -31,18 +28,24 @@ const genresData = {
 
 const MovieGenres = ({ movieGen }) => {
   const getGenreNames = () => movieGen.map((id) => {
-    const genre = genresData.genres.find((genre) => genre.id === id);
+    const genre = genresData.genres.find((genreу) => genreу.id === id);
     return genre ? genre.name : '';
   });
   const genreNames = getGenreNames();
 
   return (
     <Space style={{ flexWrap: 'wrap', gap: '5px 8px' }} size={[8, 16]} wrap>
-      {genreNames.map((name, index) => (
-        <Card className="card__genre" key={index}>{name}</Card>
+      {genreNames.map((name) => (
+        <Card className="card__genre" key={name}>
+          {name}
+        </Card>
       ))}
     </Space>
   );
+};
+
+MovieGenres.propTypes = {
+  movieGen: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default MovieGenres;
