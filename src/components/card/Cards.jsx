@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/forbid-prop-types */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'; // Импорт модуля PropTypes
+// import PropTypes from 'prop-types'; // Импорт модуля PropTypes
 import {
   Flex, Rate, Typography, Row, Col, Card,
 } from 'antd';
@@ -17,6 +18,10 @@ class Cards extends Component {
     } = this.props;
 
     function getRatingClassName(voteAverage) {
+      if (voteAverage === undefined) {
+        return 'default'; // Класс для случаев, когда рейтинг не определен
+      }
+
       const rating = voteAverage.toFixed(1);
       if (rating <= 3) {
         return 'red';
@@ -33,13 +38,14 @@ class Cards extends Component {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
       return new Date(releaseDate).toLocaleDateString('en-US', options);
     }
-    const moviesToDisplay = checkedRating
-      ? movies
-      : ratedMovies;
 
     if (!checkedRating && ratedMovies.length === 0) {
       return <h2>No movies</h2>;
     }
+
+    const moviesToDisplay = checkedRating
+      ? movies
+      : ratedMovies;
 
     return (
       <section className="flex stable-font">
@@ -71,8 +77,8 @@ class Cards extends Component {
                     {movie.original_title}
                   </Typography>
                   <div>
-                    <p className={`card__rate ${getRatingClassName(movie.vote_average)}`}>
-                      {(movie.vote_average).toFixed(1)}
+                    <p className={`card__rate ${getRatingClassName(movie.vote_average || 0)}`}>
+                      {movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}
                     </p>
                   </div>
                 </Flex>
@@ -88,7 +94,8 @@ class Cards extends Component {
                   allowHalf
                   defaultValue={getRatingForMovie(movie.id)}
                   count={10}
-                  onChange={(newRating) => this.props.handleRatingChange(movie, newRating)}
+                  onChange={(newRating) => this.props
+                    .handleRatingChange(movie.id, newRating)}
                 />
               </Col>
             </Row>
@@ -99,12 +106,12 @@ class Cards extends Component {
   }
 }
 
-Cards.propTypes = {
-  movies: PropTypes.array.isRequired,
-  getRatingForMovie: PropTypes.func.isRequired,
-  ratedMovies: PropTypes.array.isRequired,
-  checkedRating: PropTypes.bool.isRequired,
-  handleRatingChange: PropTypes.func.isRequired,
-};
+// Cards.propTypes = {
+//   movies: PropTypes.array.isRequired,
+//   getRatingForMovie: PropTypes.func.isRequired,
+//   ratedMovies: PropTypes.array.isRequired,
+//   checkedRating: PropTypes.bool.isRequired,
+//   handleRatingChange: PropTypes.func.isRequired,
+// };
 
 export default Cards;

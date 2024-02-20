@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/forbid-prop-types */
 import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
@@ -77,14 +78,6 @@ const Navigation = ({ searchData }) => {
     }
   };
 
-  useEffect(() => {
-    if (location.pathname === '/search' && searchRef.current) {
-      updateIndicator(searchRef.current);
-    } else if (location.pathname === '/rated' && ratedRef.current) {
-      updateIndicator(ratedRef.current);
-    }
-  }, [location]);
-
   const handleCheckedRatingT = () => {
     setCheckedRating(true);
   };
@@ -92,6 +85,16 @@ const Navigation = ({ searchData }) => {
   const handleCheckedRatingF = () => {
     setCheckedRating(false);
   };
+
+  useEffect(() => {
+    if (location.pathname === '/search' && searchRef.current) {
+      updateIndicator(searchRef.current);
+      handleCheckedRatingT();
+    } else if (location.pathname === '/rated' && ratedRef.current) {
+      updateIndicator(ratedRef.current);
+      handleCheckedRatingF();
+    }
+  }, [location]);
 
   return (
     <>

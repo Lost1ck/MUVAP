@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/forbid-prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -13,14 +14,19 @@ const DisplayComponent = ({ searchData }) => {
     handleRatingChange,
     ratedMovies,
     getRatingForMovie,
+    currentTab,
   } = searchData;
 
   if (isLoading) {
     return <Roulling />;
   }
+  if (currentTab === 'Rated') {
+    return <h2>No movies</h2>;
+  }
 
   return (
     <Cards
+      currentTab={currentTab}
       error={error}
       movies={movies}
       checkedRating={checkedRating}

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import debounce from 'lodash/debounce';
@@ -16,7 +17,7 @@ class App extends Component {
       movies: [],
       ratedMovies: [],
       error: null,
-      currentTab: 'Rated',
+      currentTab: '',
       isLoading: true,
       outOfSearch: false,
       isOnline: navigator.onLine,
@@ -30,19 +31,28 @@ class App extends Component {
     window.addEventListener('online', this.handleNetworkChange);
     window.addEventListener('offline', this.handleNetworkChange);
 
+    const savedGuestSessionId = localStorage.getItem('guestSessionId');
+
+    if (savedGuestSessionId) {
+      this.setState({ guestSessionId: savedGuestSessionId }, this.updateRatedMovies);
+    } else {
+      try {
+        const sessionData = await guestSession();
+        if (sessionData && sessionData.guest_session_id) {
+          localStorage.setItem('guestSessionId', sessionData.guest_session_id);
+          this.setState({ guestSessionId: sessionData.guest_session_id }, this.updateRatedMovies);
+        }
+      } catch (error) {
+        console.error('Ошибка:', error);
+      }
+    }
+
     const savedRatedMovies = localStorage.getItem('ratedMovies');
     const ratedMovies = savedRatedMovies ? JSON.parse(savedRatedMovies) : [];
     this.setState({ ratedMovies });
 
+    // Загружаем фильмы
     this.fetchData();
-    try {
-      const sessionData = await guestSession();
-      if (sessionData && sessionData.guest_session_id) {
-        this.setState({ guestSessionId: sessionData.guest_session_id }, this.updateRatedMovies);
-      }
-    } catch (error) {
-      console.error('Ошибка:', error);
-    }
   }
 
   componentWillUnmount() {
@@ -50,19 +60,48 @@ class App extends Component {
     window.removeEventListener('offline', this.handleNetworkChange);
   }
 
-  updateRatedMovies = async () => {
-    const { guestSessionId } = this.state;
-    if (!guestSessionId) return;
+  handleInputChange = (inputValue) => {
+    this.setState({ inputValue }, () => {
+      this.debouncedFetchData();
+    });
+  };
 
-    const ratedMoviesData = await fetchRatedMoviesByGuestSession(guestSessionId);
-    if (ratedMoviesData && ratedMoviesData.results) {
-      this.setState({ ratedMovies: ratedMoviesData.results }, () => {
-        localStorage.setItem('ratedMovies', JSON.stringify(this.state.ratedMovies));
-      });
+  handlePageChange = (page) => {
+    this.fetchData(page);
+  };
+
+  handleNetworkChange = () => {
+    this.setState({ isOnline: navigator.onLine });
+  };
+
+  handleRatingChange = async (movieId, newRating) => {
+    const movieToUpdate = this.state.movies.find((movie) => movie.id === movieId);
+    if (!movieToUpdate) {
+      console.error('Movie not found');
+      return;
+    }
+
+    const updatedMovie = { ...movieToUpdate, rating: newRating };
+
+    const updatedRatedMovies = [...this.state.ratedMovies
+      .filter((movie) => movie.id !== movieId), updatedMovie];
+    this.setState({ ratedMovies: updatedRatedMovies });
+
+    localStorage.setItem('ratedMovies', JSON.stringify(updatedRatedMovies));
+
+    try {
+      const { guestSessionId } = this.state;
+      if (guestSessionId) {
+        await rateMovieInGuestSession(movieId, newRating, guestSessionId);
+      } else {
+        console.error('Guest session ID is not set.');
+      }
+    } catch (error) {
+      console.error('Error while rating movie:', error);
     }
   };
 
-  fetchData = (page = 1) => {
+  fetchData = async (page = 1) => {
     if (page === undefined || page === null) {
       return;
     }
@@ -85,42 +124,16 @@ class App extends Component {
       });
   };
 
-  handleInputChange = (inputValue) => {
-    this.setState({ inputValue }, () => {
-      this.debouncedFetchData();
-    });
-  };
+  updateRatedMovies = async () => {
+    const { guestSessionId } = this.state;
+    if (!guestSessionId) return;
 
-  handlePageChange = (page) => {
-    this.fetchData(page);
-  };
-
-  handleNetworkChange = () => {
-    this.setState({ isOnline: navigator.onLine });
-  };
-
-  setCheckedRating = (checked) => {
-    this.setState({ checkedRating: checked });
-  };
-
-  handleRatingChange = async (movie, newRating) => {
-    try {
-      const { guestSessionId } = this.state;
-      if (guestSessionId) {
-        await rateMovieInGuestSession(movie.id, newRating, guestSessionId);
-        // После успешного обновления рейтинга, обновляем список оцененных фильмов
-        const ratedMoviesData = await fetchRatedMoviesByGuestSession(guestSessionId);
-        if (ratedMoviesData) {
-          this.setState({ ratedMovies: ratedMoviesData });
-        }
-        console.log(ratedMoviesData);
-      } else {
-        console.error('Guest session ID is not set.');
-      }
-    } catch (error) {
-      console.error('Ошибка при отправке рейтинга:', error);
+    const ratedMoviesData = await fetchRatedMoviesByGuestSession(guestSessionId);
+    if (ratedMoviesData && ratedMoviesData.results) {
+      this.setState({ ratedMovies: ratedMoviesData.results }, () => {
+        localStorage.setItem('ratedMovies', JSON.stringify(this.state.ratedMovies));
+      });
     }
-    localStorage.setItem('ratedMovies', JSON.stringify(this.state.ratedMovies));
   };
 
   getRatingForMovie = (movieId) => {
@@ -129,14 +142,9 @@ class App extends Component {
     return ratedMovie ? ratedMovie.rating : 0;
   };
 
-  // async createGuestSession() {
-  //   const guestSessionResponse = await guestSession();
-  //   if (guestSessionResponse.success) {
-  //     this.setState({ guestSessionId: guestSessionResponse });
-  //   } else {
-  //     console.error('Ошибка получения guest_session_id');
-  //   }
-  // }
+  setCheckedRating = (checked) => {
+    this.setState({ checkedRating: checked });
+  };
 
   render() {
     const {

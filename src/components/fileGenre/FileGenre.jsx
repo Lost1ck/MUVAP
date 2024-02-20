@@ -29,15 +29,15 @@ const genresData = {
 const MovieGenres = ({ movieGen }) => {
   const getGenreNames = () => movieGen.map((id) => {
     const genre = genresData.genres.find((genreу) => genreу.id === id);
-    return genre ? genre.name : '';
+    return genre ? { name: genre.name, id: genre.id } : null;
   });
   const genreNames = getGenreNames();
 
   return (
     <Space style={{ flexWrap: 'wrap', gap: '5px 8px' }} size={[8, 16]} wrap>
-      {genreNames.map((name) => (
-        <Card className="card__genre" key={name}>
-          {name}
+      {genreNames.map((genre) => (
+        <Card className="card__genre" key={genre.id}>
+          {genre.name}
         </Card>
       ))}
     </Space>

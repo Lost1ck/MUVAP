@@ -59,6 +59,7 @@ export async function fetchRatedMoviesByGuestSession(guestSessionId) {
   try {
     const response = await fetch(`https://api.themoviedb.org/3/guest_session/${guestSessionId}/rated/movies?language=en-US&page=1`, options);
     const data = await response.json();
+    console.log(data.results);
     if (!response.ok) {
       throw new Error('Ошибка при получении оцененных фильмов');
     }
@@ -70,17 +71,18 @@ export async function fetchRatedMoviesByGuestSession(guestSessionId) {
     throw new Error(error.message);
   }
 }
-// Отправка на сервер
-export async function rateMovieInGuestSession(movieId, rating, guestSessionId) {
+
+export async function rateMovieInGuestSession(movie, newRating, guestSessionId) {
   const API_KEY = 'fa6bd79bb0e8b88d9b5763750d9c7e52';
   try {
-    const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/rating?api_key=${API_KEY}&guest_session_id=${guestSessionId}`, {
+    const response = await fetch(`https://api.themoviedb.org/3/movie/${movie}/rating?api_key=${API_KEY}&guest_session_id=${guestSessionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
       },
-      body: JSON.stringify({ value: rating }),
+      body: JSON.stringify({ value: newRating }),
     });
+    console.log('send movie', guestSessionId);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(`Ошибка отправки рейтинга: ${errorData.status_message}`);
